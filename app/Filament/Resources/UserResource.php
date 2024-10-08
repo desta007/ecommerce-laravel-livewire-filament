@@ -6,7 +6,7 @@ use App\Filament\Resources\UserResource\Pages;
 use App\Filament\Resources\UserResource\RelationManagers;
 use App\Models\User;
 use Filament\Forms;
-use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Pages\CreateRecord;
@@ -38,7 +38,7 @@ class UserResource extends Resource
                 ->unique(ignoreRecord:true)
                 ->required(),
 
-                DatePicker::make('email_verified_at')
+                DateTimePicker::make('email_verified_at')
                 ->label('Email Verified At')
                 ->default(now()),
 
