@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\UserResource\Pages;
 use App\Filament\Resources\UserResource\RelationManagers;
+use App\Filament\Resources\UserResource\RelationManagers\OrdersRelationManager;
 use App\Models\User;
 use Filament\Forms;
 use Filament\Forms\Components\DateTimePicker;
@@ -29,23 +30,23 @@ class UserResource extends Resource
         return $form
             ->schema([
                 TextInput::make('name')
-                ->required(),
+                    ->required(),
 
                 TextInput::make('email')
-                ->label('Email Address')
-                ->email()
-                ->maxlength(255)
-                ->unique(ignoreRecord:true)
-                ->required(),
+                    ->label('Email Address')
+                    ->email()
+                    ->maxlength(255)
+                    ->unique(ignoreRecord: true)
+                    ->required(),
 
                 DateTimePicker::make('email_verified_at')
-                ->label('Email Verified At')
-                ->default(now()),
+                    ->label('Email Verified At')
+                    ->default(now()),
 
                 TextInput::make('password')
-                ->password()
-                ->dehydrated(fn($state) => filled($state))
-                ->required(fn(Page $livewire):bool => $livewire instanceof CreateRecord),
+                    ->password()
+                    ->dehydrated(fn($state) => filled($state))
+                    ->required(fn(Page $livewire): bool => $livewire instanceof CreateRecord),
             ]);
     }
 
@@ -54,15 +55,15 @@ class UserResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('name')
-                ->searchable(),
+                    ->searchable(),
                 TextColumn::make('email')
-                ->searchable(),
+                    ->searchable(),
                 TextColumn::make('email_verified_at')
-                ->dateTime()
-                ->sortable(),
+                    ->dateTime()
+                    ->sortable(),
                 TextColumn::make('created_at')
-                ->dateTime()
-                ->sortable()
+                    ->dateTime()
+                    ->sortable()
             ])
             ->filters([
                 //
@@ -85,7 +86,7 @@ class UserResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            OrdersRelationManager::class
         ];
     }
 
