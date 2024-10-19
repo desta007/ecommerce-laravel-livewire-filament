@@ -26,34 +26,36 @@ class CategoryResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-tag';
 
+    protected static ?int $navigationSort = 3;
+
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
                 Section::make([
                     Grid::make()
-                    ->schema([
-                        TextInput::make('name')
-                        ->maxLength(255)
-                        ->required()
-                        ->live(onBlur:true)
-                        ->afterStateUpdated(fn (string $operation, $state, Set $set) => $operation
-                        === 'create' ? $set('slug', Str::slug($state)): null),
+                        ->schema([
+                            TextInput::make('name')
+                                ->maxLength(255)
+                                ->required()
+                                ->live(onBlur: true)
+                                ->afterStateUpdated(fn(string $operation, $state, Set $set) => $operation
+                                    === 'create' ? $set('slug', Str::slug($state)) : null),
 
-                        TextInput::make('slug')
-                        ->maxLength(255)
-                        ->disabled()
-                        ->required()
-                        ->dehydrated()
-                        ->unique(Category::class, 'slug', ignoreRecord: true)
-                    ]),
+                            TextInput::make('slug')
+                                ->maxLength(255)
+                                ->disabled()
+                                ->required()
+                                ->dehydrated()
+                                ->unique(Category::class, 'slug', ignoreRecord: true)
+                        ]),
                     FileUpload::make('image')
-                    ->image()
-                    ->directory('categories'),
+                        ->image()
+                        ->directory('categories'),
 
                     Toggle::make('is_active')
-                    ->required()
-                    ->default(true)
+                        ->required()
+                        ->default(true)
                 ])
             ]);
     }
@@ -75,7 +77,7 @@ class CategoryResource extends Resource
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
 
-                    Tables\Columns\TextColumn::make('updated_at')
+                Tables\Columns\TextColumn::make('updated_at')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),

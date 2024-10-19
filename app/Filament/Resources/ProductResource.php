@@ -31,6 +31,8 @@ class ProductResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-squares-2x2';
 
+    protected static ?int $navigationSort = 4;
+
     public static function form(Form $form): Form
     {
         return $form
@@ -38,70 +40,70 @@ class ProductResource extends Resource
                 Group::make()->schema([
                     Section::make('Product Information')->schema([
                         TextInput::make('name')
-                        ->required()
-                        ->maxLength(255)
-                        ->live(onBlur:true)
-                        ->afterStateUpdated(function(string $operation, $state, Set $set){
-                            if ($operation !== 'create') {
-                                return;
-                            }
-                            $set('slug', Str::slug($state));
-                        }),
+                            ->required()
+                            ->maxLength(255)
+                            ->live(onBlur: true)
+                            ->afterStateUpdated(function (string $operation, $state, Set $set) {
+                                if ($operation !== 'create') {
+                                    return;
+                                }
+                                $set('slug', Str::slug($state));
+                            }),
 
                         TextInput::make('slug')
-                        ->required()
-                        ->maxLength(255)
-                        ->disabled()
-                        ->dehydrated()
-                        ->unique(Product::class, 'slug', ignoreRecord:true),
+                            ->required()
+                            ->maxLength(255)
+                            ->disabled()
+                            ->dehydrated()
+                            ->unique(Product::class, 'slug', ignoreRecord: true),
 
                         MarkdownEditor::make('description')
-                        ->columnSpanFull()
-                        ->fileAttachmentsDirectory('products')
+                            ->columnSpanFull()
+                            ->fileAttachmentsDirectory('products')
                     ])->columns(2),
 
                     Section::make('images')->schema([
                         FileUpload::make('images')
-                        ->multiple()
-                        ->directory('products')
-                        ->maxFiles(5)
-                        ->reorderable()
+                            ->multiple()
+                            ->directory('products')
+                            ->maxFiles(5)
+                            ->reorderable()
                     ])
                 ])->columnSpan(2),
 
                 Group::make()->schema([
                     Section::make('Price')->schema([
                         TextInput::make('price')
-                        ->numeric()
-                        ->required()
-                        ->prefix('IDR')
+                            ->numeric()
+                            ->required()
+                            ->prefix('IDR')
                     ]),
 
                     Section::make('Associations')->schema([
                         Select::make('category_id')
-                        ->required()
-                        ->searchable()
-                        ->preload()
-                        ->relationship('category', 'name'),
+                            ->required()
+                            ->searchable()
+                            ->preload()
+                            ->relationship('category', 'name'),
 
                         Select::make('brand_id')
-                        ->required()
-                        ->searchable()
-                        ->preload()
-                        ->relationship('brand', 'name'),
+                            ->required()
+                            ->searchable()
+                            ->preload()
+                            ->relationship('brand', 'name'),
                     ]),
 
                     Section::make('Status')->schema([
                         Toggle::make('in_stock')
-                        ->required()
-                        ->default(true),
+                            ->required()
+                            ->default(true),
                         Toggle::make('is_active')
-                        ->required()
-                        ->default(true),
+                            ->required()
+                            ->default(true),
                         Toggle::make('is_featured')
-                        ->required(),
+                            ->required(),
                         Toggle::make('on_sale')
-                        ->required(),
+                            ->required(),
                     ])
                 ])->columnSpan(1)
             ])->columns(3);
@@ -112,37 +114,37 @@ class ProductResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('name')
-                ->searchable(),
+                    ->searchable(),
                 TextColumn::make('category.name')
-                ->sortable(),
+                    ->sortable(),
                 TextColumn::make('brand.name')
-                ->sortable(),
+                    ->sortable(),
                 TextColumn::make('price')
-                ->money('IDR')
-                ->sortable(),
+                    ->money('IDR')
+                    ->sortable(),
                 IconColumn::make('is_featured')
-                ->boolean(),
+                    ->boolean(),
                 IconColumn::make('on_sale')
-                ->boolean(),
+                    ->boolean(),
                 IconColumn::make('in_stock')
-                ->boolean(),
+                    ->boolean(),
                 IconColumn::make('is_active')
-                ->boolean(),
+                    ->boolean(),
                 TextColumn::make('created_at')
-                ->dateTime()
-                ->sortable()
-                ->toggleable(isToggledHiddenByDefault:true),
+                    ->dateTime()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('updated_at')
-                ->dateTime()
-                ->sortable()
-                ->toggleable(isToggledHiddenByDefault:true)
+                    ->dateTime()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true)
 
             ])
             ->filters([
                 SelectFilter::make('category')
-                ->relationship('category', 'name'),
+                    ->relationship('category', 'name'),
                 SelectFilter::make('brand')
-                ->relationship('brand', 'name'),
+                    ->relationship('brand', 'name'),
             ])
             ->actions([
                 Tables\Actions\ActionGroup::make([

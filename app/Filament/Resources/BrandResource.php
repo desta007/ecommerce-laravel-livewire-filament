@@ -27,34 +27,38 @@ class BrandResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-computer-desktop';
 
+    protected static ?string $recordTitleAttribute = 'name';
+
+    protected static ?int $navigationSort = 2;
+
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
                 Section::make([
                     Grid::make()
-                    ->schema([
-                        TextInput::make('name')
-                        ->maxLength(255)
-                        ->required()
-                        ->live(onBlur:true)
-                        ->afterStateUpdated(fn (string $operation, $state, Set $set) => $operation
-                        === 'create' ? $set('slug', Str::slug($state)): null),
+                        ->schema([
+                            TextInput::make('name')
+                                ->maxLength(255)
+                                ->required()
+                                ->live(onBlur: true)
+                                ->afterStateUpdated(fn(string $operation, $state, Set $set) => $operation
+                                    === 'create' ? $set('slug', Str::slug($state)) : null),
 
-                        TextInput::make('slug')
-                        ->maxLength(255)
-                        ->disabled()
-                        ->required()
-                        ->dehydrated()
-                        ->unique(Category::class, 'slug', ignoreRecord: true)
-                    ]),
+                            TextInput::make('slug')
+                                ->maxLength(255)
+                                ->disabled()
+                                ->required()
+                                ->dehydrated()
+                                ->unique(Category::class, 'slug', ignoreRecord: true)
+                        ]),
                     FileUpload::make('image')
-                    ->image()
-                    ->directory('categories'),
+                        ->image()
+                        ->directory('categories'),
 
                     Toggle::make('is_active')
-                    ->required()
-                    ->default(true)
+                        ->required()
+                        ->default(true)
                 ])
             ]);
     }
@@ -65,7 +69,7 @@ class BrandResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('name')
                     ->searchable(),
-                    Tables\Columns\ImageColumn::make('image'),
+                Tables\Columns\ImageColumn::make('image'),
                 Tables\Columns\TextColumn::make('slug')
                     ->searchable(),
 
