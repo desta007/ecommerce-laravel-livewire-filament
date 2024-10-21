@@ -5,7 +5,6 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\BrandResource\Pages;
 use App\Filament\Resources\BrandResource\RelationManagers;
 use App\Models\Brand;
-use App\Models\Category;
 use Filament\Forms;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Grid;
@@ -50,7 +49,7 @@ class BrandResource extends Resource
                                 ->disabled()
                                 ->required()
                                 ->dehydrated()
-                                ->unique(Category::class, 'slug', ignoreRecord: true)
+                                ->unique(Brand::class, 'slug', ignoreRecord: true)
                         ]),
                     FileUpload::make('image')
                         ->image()
